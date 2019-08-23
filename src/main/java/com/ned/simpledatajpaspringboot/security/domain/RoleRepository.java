@@ -1,8 +1,8 @@
-package com.ned.simpledatajpaspringboot.domain;
+package com.ned.simpledatajpaspringboot.security.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 }

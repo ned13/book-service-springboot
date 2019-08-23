@@ -1,4 +1,4 @@
-package com.ned.simpledatajpaspringboot.domain;
+package com.ned.simpledatajpaspringboot.book.domain;
 
 import java.time.Instant;
 import java.util.Date;
@@ -21,6 +21,7 @@ public class Book {
 
     @Id
     @GeneratedValue
+    @Column
     private Long id;
 
     @NotNull

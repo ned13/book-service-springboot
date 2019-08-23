@@ -1,12 +1,12 @@
-package com.ned.simpledatajpaspringboot.applicationservice;
+package com.ned.simpledatajpaspringboot.book.applicationservice;
 
-import com.ned.simpledatajpaspringboot.domain.BookRepository;
+import com.ned.simpledatajpaspringboot.book.domain.BookRepository;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-import com.ned.simpledatajpaspringboot.domain.Book;
+import com.ned.simpledatajpaspringboot.book.domain.Book;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
