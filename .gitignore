@@ -30,4 +30,8 @@ build/
 ### VS Code ###
 .vscode/
 
+### transaction ###
+/transaction-logs/
+
+### Mac ###
 .DS_Store

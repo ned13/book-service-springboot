@@ -19,12 +19,13 @@ INSERT INTO book VALUES(4, 'Alice''s Adventures in Wonderland', 'aaw@abc.com', N
 
 ALTER SEQUENCE hibernate_sequence RESTART WITH 5;
 
-INSERT INTO user (id, username, password) VALUES (1, 'user', 'e10adc3949ba59abbe56e057f20f883e');
-INSERT INTO user (id, username , password) VALUES (2,'admin','e10adc3949ba59abbe56e057f20f883e');
+INSERT INTO user (id, username, password) VALUES (1, 'user', '9a1996efc97181f0aee18321aa3b3b12');
+INSERT INTO user (id, username , password) VALUES (2,'admin','9a1996efc97181f0aee18321aa3b3b12');
 
 INSERT INTO role (id, name) VALUES (1, 'USER');
 INSERT INTO role (id, name) VALUES (2, 'ADMIN');
 
+-- Following statement is initialized by code.
 -- INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
 -- INSERT INTO user_role (user_id, role_id) VALUES (2, 1);
 -- INSERT INTO user_role (user_id, role_id) VALUES (2, 2);

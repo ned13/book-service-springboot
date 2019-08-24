@@ -1,10 +1,10 @@
-package com.ned.simpledatajpaspringboot;
+package com.ned.simpledatajpaspringboot.book;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.ned.simpledatajpaspringboot.applicationservice.BookApplicationService;
-import com.ned.simpledatajpaspringboot.domain.Book;
+import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
+import com.ned.simpledatajpaspringboot.book.domain.Book;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,6 +1,7 @@
 package com.ned.simpledatajpaspringboot.security.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
@@ -30,12 +32,21 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Column
-    @OneToMany
+    @ManyToMany
     @JoinTable(name="user_role",
         joinColumns={@JoinColumn(name="user_id")},
         inverseJoinColumns={@JoinColumn(name="role_id")}
     )
     private List<Role> authorities;
+
+    public User() {}
+
+    public User(User u) {
+        this.id = u.id;
+        this.username = u.getUsername();
+        this.password = u.getPassword();
+        this.authorities = new ArrayList<>(u.getAuthorities());
+    }
 
     public Long getId() {
         return id;

@@ -1,4 +1,4 @@
-package com.ned.simpledatajpaspringboot.domain;
+package com.ned.simpledatajpaspringboot.book.domain;
 
 import static org.junit.Assert.assertThat;
 
