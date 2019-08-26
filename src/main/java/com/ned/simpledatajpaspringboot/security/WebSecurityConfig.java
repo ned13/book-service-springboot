@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             //对密码进行加密
             @Override
             public String encode(CharSequence charSequence) {
-                logger.info(charSequence.toString());
+                //logger.info(charSequence.toString());
                 return DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
             }
             //对密码进行判断匹配

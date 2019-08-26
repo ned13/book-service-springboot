@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,11 +32,10 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Column
-    @ManyToMany
+    @ManyToMany //(fetch=FetchType.EAGER) //DO NOT use FetchType.EAGER to cause performance issue.
     @JoinTable(name="user_role",
         joinColumns={@JoinColumn(name="user_id")},
-        inverseJoinColumns={@JoinColumn(name="role_id")}
-    )
+        inverseJoinColumns={@JoinColumn(name="role_id")})
     private List<Role> authorities;
 
     public User() {}

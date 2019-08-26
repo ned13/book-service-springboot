@@ -11,6 +11,7 @@ import com.ned.simpledatajpaspringboot.security.domain.RoleRepository;
 import com.ned.simpledatajpaspringboot.security.domain.User;
 import com.ned.simpledatajpaspringboot.security.domain.UserRepository;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,19 +74,24 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
 
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         //TODO: it maybe use cache first.
+        return this.userRepo.findUserByUsername(userName).get();
 
-        return Option.of(userName)
-            .map(u -> {
-                User exampleUser = new User();
-                exampleUser.setUsername(userName);
-                Optional<User> userOpt = userRepo.findOne(Example.of(exampleUser));
-                logger.info(io.vavr.collection.List.ofAll(userOpt.get().getAuthorities()).toString());
-                return userOpt.get();
-            })
-            .getOrNull();
+        // return Option.of(userName)
+        //     .map(u -> {
+        //         this.userRepo.findUserByUsername(userName)
+        //         User exampleUser = new User();
+        //         exampleUser.setUsername(userName);
+        //         Optional<User> userOpt = userRepo.findOne(Example.of(exampleUser));
+        //         if (!userOpt.isPresent()) return null;
+        //         User retUser = userOpt.get();
+        //         Hibernate.initialize(retUser.getAuthorities());
+        //         return retUser;
+        //     })
+        //     .getOrNull();
 
         // Because hibernate retrieve user with relative role, we don't need to get role again.
         // if (userOpt.isPresent()) {
