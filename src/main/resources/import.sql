@@ -12,10 +12,14 @@
 --);
 
 -- hibernate auto created column doesn't follow the order in definition of Book entity.
-INSERT INTO book VALUES(1, 'The Tartar Steppe', 'tts@abc.com', NOW());
-INSERT INTO book VALUES(2, 'Poem Strip', 'ps@abc.com', NOW());
-INSERT INTO book VALUES(3, 'Restless Nights: Selected Stories of Dino Buzzati', 'rnssodb@abc.com', NOW());
-INSERT INTO book VALUES(4, 'Alice''s Adventures in Wonderland', 'aaw@abc.com', NOW());
+-- INSERT INTO table_name (column1, column2, column3, ...)
+-- VALUES (value1, value2, value3, ...);
+
+
+INSERT INTO book (id, name, publish_date, contact_email) VALUES(1, 'The Tartar Steppe', NOW(),'tts@abc.com');
+INSERT INTO book (id, name, publish_date, contact_email) VALUES(2, 'Poem Strip', NOW(), 'ps@abc.com');
+INSERT INTO book (id, name, publish_date, contact_email) VALUES(3, 'Restless Nights: Selected Stories of Dino Buzzati', NOW(), 'rnssodb@abc.com');
+INSERT INTO book (id, name, publish_date, contact_email) VALUES(4, 'Alice''s Adventures in Wonderland', NOW(), 'aaw@abc.com');
 
 ALTER SEQUENCE hibernate_sequence RESTART WITH 5;
 

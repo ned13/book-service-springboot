@@ -2,6 +2,7 @@ package com.ned.simpledatajpaspringboot.book.domain;
 
 import static org.junit.Assert.assertThat;
 
+import java.time.Instant;
 import java.util.Random;
 import java.util.Set;
 
@@ -10,10 +11,13 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
+import com.ned.simpledatajpaspringboot.book.dto.BookDto;
+
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.modelmapper.TypeMap;
 
 import io.vavr.collection.CharSeq;
 import io.vavr.collection.Stream;
@@ -28,6 +32,28 @@ public class BookTest {
     public static void beforeTest() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         BookTest.validator = factory.getValidator();
+    }
+
+    @Test
+    public void testSetterAndGetter() {
+        //Arrange
+        Book aBook = new Book();
+        final long ID = 1234L;
+        final String NAME = "ThisIsABook.";
+        final Instant PUBLISH_DATE = Instant.now();
+        final String CONTACT_EMAIL = "iamcontact@abc.com";
+
+        //Act
+        aBook.setId(ID);
+        aBook.setName(NAME);
+        aBook.setPublishDate(PUBLISH_DATE);
+        aBook.setContactEmail(CONTACT_EMAIL);
+
+        //Assert
+        assertThat(aBook.getId(), is(ID));
+        assertThat(aBook.getName(), is(NAME));
+        assertThat(aBook.getPublishDate(), is(PUBLISH_DATE));
+        assertThat(aBook.getContactEmail(), is(CONTACT_EMAIL));
     }
 
     @Test
@@ -91,5 +117,11 @@ public class BookTest {
 
         //Assert
         assertThat(book1Violations, hasItem(Matchers.<ConstraintViolation<Book>>hasProperty("message", is(Book.INVALID_EMAIL))));
+    }
+
+    @Test
+    public void testToBookDto() {
+        TypeMap<Book, BookDto> tm = Book.mapper.createTypeMap(Book.class, BookDto.class);
+        tm.validate();
     }
 }

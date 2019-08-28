@@ -12,11 +12,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.ned.simpledatajpaspringboot.book.dto.BookDto;
+
+import org.modelmapper.ModelMapper;
+
 @Entity
 public class Book {
 
     public static final String INVALID_NAME_LENGTH = "Invalid name length";
     public static final String INVALID_EMAIL = "Invalid email";
+    public static final ModelMapper mapper = new ModelMapper();
+    public static final Book INVALID_BOOK = new Book();
 
     @Id
     @GeneratedValue
@@ -37,6 +43,11 @@ public class Book {
 
     // standard constructors
     public Book() {
+    }
+
+    public BookDto toBookDto() {
+        if (this == Book.INVALID_BOOK) return BookDto.INVALID_BOOKDTO;
+        return mapper.map(this, BookDto.class);
     }
 
     // standard getters and setters
@@ -71,6 +82,8 @@ public class Book {
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
+
+
 
 
 

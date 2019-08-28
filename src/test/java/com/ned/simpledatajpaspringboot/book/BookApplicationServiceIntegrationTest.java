@@ -1,10 +1,12 @@
 package com.ned.simpledatajpaspringboot.book;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
 import com.ned.simpledatajpaspringboot.book.domain.Book;
+import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +41,10 @@ public class BookApplicationServiceIntegrationTest {
         final String NEW_BOOK_NAME = "IamNewBook1234";
 
         //Act
-        bookAppService.addNewBook(NEW_BOOK_NAME);
+        BookDto newBookDto = new BookDto();
+        newBookDto.setName(NEW_BOOK_NAME);
+        newBookDto.setPublishDate(Instant.now());
+        bookAppService.addNewBook(newBookDto);
 
         //Assert
         List<Book> books = bookAppService.list();
@@ -50,7 +55,10 @@ public class BookApplicationServiceIntegrationTest {
     public void testFindBookByName() {
         //Arrange
         final String NEW_BOOK_NAME = "ThisIsANewBook";
-        bookAppService.addNewBook(NEW_BOOK_NAME);
+        BookDto newBookDto = new BookDto();
+        newBookDto.setName(NEW_BOOK_NAME);
+        newBookDto.setPublishDate(Instant.now());
+        bookAppService.addNewBook(newBookDto);
 
         //Act
         Optional<Book> foundBook = bookAppService.findBookBy(NEW_BOOK_NAME);
