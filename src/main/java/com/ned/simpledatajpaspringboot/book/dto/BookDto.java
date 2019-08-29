@@ -1,18 +1,19 @@
 package com.ned.simpledatajpaspringboot.book.dto;
 
 import java.time.Instant;
+import java.util.Date;
 
 public class BookDto {
     private Long id;
     private String name;
-    private Instant publishDate;
+    private Date publishDate;
     private String contactEmail;
 
     public static final BookDto INVALID_BOOKDTO = new BookDto();
 
     public BookDto() {}
 
-    public BookDto(Long id, String name, Instant publishDate, String contactEmail) {
+    public BookDto(Long id, String name, Date publishDate, String contactEmail) {
         this.id = id;
         this.name = name;
         this.publishDate = publishDate;
@@ -35,11 +36,11 @@ public class BookDto {
         this.name = name;
     }
 
-    public Instant getPublishDate() {
+    public Date getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(Instant publishDate) {
+    public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
     }
 

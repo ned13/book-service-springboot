@@ -1,6 +1,7 @@
 package com.ned.simpledatajpaspringboot.book.domain;
 
 import java.time.Instant;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,14 +16,16 @@ import javax.validation.constraints.Size;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 
 @Entity
 public class Book {
 
     public static final String INVALID_NAME_LENGTH = "Invalid name length";
     public static final String INVALID_EMAIL = "Invalid email";
-    public static final ModelMapper mapper = new ModelMapper();
     public static final Book INVALID_BOOK = new Book();
+    private static final ModelMapper modelMapper = new ModelMapper();//TODO: this object needs to be Singleton.
+    public static final TypeMap<Book, BookDto> typeMap = Book.modelMapper.createTypeMap(Book.class, BookDto.class);
 
     @Id
     @GeneratedValue
@@ -41,13 +44,23 @@ public class Book {
     @Column
     private String contactEmail;
 
+    static {
+        Book.typeMap.addMappings(mapper -> mapper
+                                    .using((instant) -> Date.from((Instant)instant.getSource()))
+                                    .map(Book::getPublishDate, BookDto::setPublishDate));
+    }
+
     // standard constructors
     public Book() {
     }
 
+    public static TypeMap<Book, BookDto> getTypeMap() {
+        return Book.typeMap;
+    }
+
     public BookDto toBookDto() {
         if (this == Book.INVALID_BOOK) return BookDto.INVALID_BOOKDTO;
-        return mapper.map(this, BookDto.class);
+        return modelMapper.map(this, BookDto.class);
     }
 
     // standard getters and setters

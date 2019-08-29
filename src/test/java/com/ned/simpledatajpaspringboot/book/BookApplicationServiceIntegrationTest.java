@@ -1,6 +1,7 @@
 package com.ned.simpledatajpaspringboot.book;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +44,7 @@ public class BookApplicationServiceIntegrationTest {
         //Act
         BookDto newBookDto = new BookDto();
         newBookDto.setName(NEW_BOOK_NAME);
-        newBookDto.setPublishDate(Instant.now());
+        newBookDto.setPublishDate(Date.from(Instant.now()));
         bookAppService.addNewBook(newBookDto);
 
         //Assert
@@ -57,7 +58,7 @@ public class BookApplicationServiceIntegrationTest {
         final String NEW_BOOK_NAME = "ThisIsANewBook";
         BookDto newBookDto = new BookDto();
         newBookDto.setName(NEW_BOOK_NAME);
-        newBookDto.setPublishDate(Instant.now());
+        newBookDto.setPublishDate(Date.from(Instant.now()));
         bookAppService.addNewBook(newBookDto);
 
         //Act

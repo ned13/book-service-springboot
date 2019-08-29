@@ -3,6 +3,8 @@ package com.ned.simpledatajpaspringboot.book.domain;
 import static org.junit.Assert.assertThat;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Random;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ import javax.validation.ValidatorFactory;
 
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
+import org.exparity.hamcrest.date.DateMatchers;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,6 +27,7 @@ import io.vavr.collection.Stream;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.greaterThan;
+
 
 public class BookTest {
     private static Validator validator;
@@ -120,8 +124,39 @@ public class BookTest {
     }
 
     @Test
+    public void testToBookDtoTypeMap() {
+        Book.getTypeMap().validate();
+    }
+
+    @Test
     public void testToBookDto() {
-        TypeMap<Book, BookDto> tm = Book.mapper.createTypeMap(Book.class, BookDto.class);
-        tm.validate();
+        //Arrange
+        Book aBook = new Book();
+        final long ID = 1235L;
+        final String NAME = "TOBookDto";
+        final Instant PUBLISH_DATE = Instant.now();
+        final String CONTACT_EMAIL = "tobookdto@abc.com";
+        aBook.setId(ID);
+        aBook.setName(NAME);
+        aBook.setPublishDate(PUBLISH_DATE);
+        aBook.setContactEmail(CONTACT_EMAIL);
+
+        //Act
+        BookDto bookDto = aBook.toBookDto();
+
+        //Assert
+        assertThat(aBook.getId(), is(bookDto.getId()));
+        assertThat(aBook.getName(), is(bookDto.getName()));
+        assertThat(Date.from(aBook.getPublishDate()),  DateMatchers.within(2, ChronoUnit.SECONDS, bookDto.getPublishDate()));
+        assertThat(aBook.getContactEmail(), is(bookDto.getContactEmail()));
+    }
+
+    @Test
+    public void testInvalidBookToInavlidBookDto() {
+        //Act
+        BookDto bookDto = Book.INVALID_BOOK.toBookDto();
+
+        //Assert
+        assertThat(bookDto, is(BookDto.INVALID_BOOKDTO));
     }
 }

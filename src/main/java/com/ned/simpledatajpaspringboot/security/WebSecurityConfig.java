@@ -53,22 +53,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                .anyRequest().permitAll()
+        http.csrf().disable()
+                .authorizeRequests()
+
+                .anyRequest().anonymous()
             .and()
                 .formLogin().permitAll()
             .and()
                 .logout().permitAll();
 
         // http.authorizeRequests()
-        //         .antMatchers("/", "/home", "/h2-console").permitAll()
-        //         .anyRequest().authenticated()
+        //         //.antMatchers("/", "/h2-console").permitAll()
+        //         .anyRequest().anonymous()
         //         .and()
         //     .formLogin()
         //         .permitAll()
         //         .and()
         //     .logout()
-        //         .permitAll();
+        //         .permitAll()
+        //         .logoutSuccessUrl("/login");
     }
 
     // @Bean
