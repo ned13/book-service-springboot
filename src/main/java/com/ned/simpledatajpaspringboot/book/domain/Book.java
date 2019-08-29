@@ -2,6 +2,7 @@ package com.ned.simpledatajpaspringboot.book.domain;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,9 +55,25 @@ public class Book {
     public Book() {
     }
 
+    @Override public boolean equals(Object otherObj){
+        if (this == otherObj) return true;
+        if (!(otherObj instanceof Book)) return false;
+        Book otherBook = (Book)otherObj;
+        return Objects.equals(this.id, otherBook.id)
+            && Objects.equals(this.name, otherBook.name)
+            && Objects.equals(this.publishDate, otherBook.publishDate)
+            && Objects.equals(this.contactEmail, otherBook.contactEmail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.name);
+    }
+
     public static TypeMap<Book, BookDto> getTypeMap() {
         return Book.typeMap;
     }
+
 
     public BookDto toBookDto() {
         if (this == Book.INVALID_BOOK) return BookDto.INVALID_BOOKDTO;
@@ -95,6 +112,8 @@ public class Book {
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
     }
+
+
 
 
 

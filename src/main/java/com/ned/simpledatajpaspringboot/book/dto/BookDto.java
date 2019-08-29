@@ -2,6 +2,7 @@ package com.ned.simpledatajpaspringboot.book.dto;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 
 public class BookDto {
     private Long id;
@@ -18,6 +19,22 @@ public class BookDto {
         this.name = name;
         this.publishDate = publishDate;
         this.contactEmail = contactEmail;
+    }
+
+    @Override
+    public boolean equals(Object otherObj) {
+        if (this == otherObj) return true;
+        if (!(otherObj instanceof BookDto)) return false;
+        BookDto otherBook = (BookDto)otherObj;
+        return Objects.equals(this.id, otherBook.id)
+            && Objects.equals(this.name, otherBook.name)
+            && Objects.equals(this.publishDate, otherBook.publishDate)
+            && Objects.equals(this.contactEmail, otherBook.contactEmail);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.name, this.publishDate, this.contactEmail);
     }
 
     public Long getId() {

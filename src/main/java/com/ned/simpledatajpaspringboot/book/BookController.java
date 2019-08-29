@@ -3,7 +3,9 @@ package com.ned.simpledatajpaspringboot.book;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
 import com.ned.simpledatajpaspringboot.book.domain.Book;
@@ -30,18 +32,22 @@ public class BookController {
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Book> getAllBoook(@RequestParam(value = "bookname", required = false) String bookname) {
+    public ResponseEntity<Result> getAllBoook(@RequestParam(value = "bookname", required = false) String bookname) {
         if (bookname == null || bookname == "") {
-            return bookAppService.getAllBoook();
+            List<BookDto> allBook = bookAppService.getAllBoook().stream().map(b -> b.toBookDto()).collect(Collectors.toList());
+            return ResponseEntity.ok().body(new Result(true, allBook));
         } else {
-            Optional<Book> foundBook = bookAppService.findBookBy(bookname);
-            return foundBook.isPresent() ? Arrays.asList(foundBook.get()) : new ArrayList<Book>();
+            Optional<Book> foundBookOpt = bookAppService.findBookBy(bookname);
+            if (!foundBookOpt.isPresent()) return ResponseEntity.ok().body(new Result(true));
+            Book foundBook = foundBookOpt.get();
+            return ResponseEntity.ok().body(new Result(true, foundBook.toBookDto()));
         }
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
-    public BookDto addNewBook(@RequestBody BookDto bookDto) {
-        return bookAppService.addNewBook(bookDto);
+    public ResponseEntity<Result> addNewBook(@RequestBody BookDto bookDto) {
+        BookDto addedBookDto = bookAppService.addNewBook(bookDto);
+        return ResponseEntity.ok().body(new Result(true, addedBookDto));
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})
@@ -57,31 +63,33 @@ public class BookController {
     public class Result {
         public boolean available = false;
         public String message = "";
-        public BookDto book = BookDto.INVALID_BOOKDTO;
+        public List<BookDto> books = new ArrayList<>();
 
         public Result(boolean available) {
-            this(available, null, null);
+            this(available, (BookDto)null, null);
+        }
+
+        public Result(boolean available, String message) {
+            this(available, (BookDto)null, message);
         }
 
         public Result(boolean available, BookDto book) {
             this(available, book, null);
         }
 
-        public Result(boolean available, String message) {
-            this(available, null, message);
-        }
-
-
         public Result(boolean available, BookDto book, String message) {
-            this.available = available;
-            this.book = book != null ? book : this.book;
-            this.message = message != null ? message : this.message;
+            this(available, Objects.nonNull(book) ? Arrays.asList(book) : null, message);
         }
 
+        public Result(boolean available, List<BookDto> books) {
+            this(available, books, null);
+        }
 
-
-
-
+        public Result(boolean available, List<BookDto> books, String message) {
+            this.available = available;
+            this.books = Objects.nonNull(books) ? books : this.books;
+            this.message = Objects.nonNull(message) ? message : this.message;
+        }
     }
 }
 
