@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Version;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -44,6 +45,9 @@ public class Book {
     @Email(message = INVALID_EMAIL)
     @Column
     private String contactEmail;
+
+    @Version
+    private Integer version;
 
     static {
         Book.typeMap.addMappings(mapper -> mapper
@@ -111,6 +115,14 @@ public class Book {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
 

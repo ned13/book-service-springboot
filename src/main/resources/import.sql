@@ -11,10 +11,6 @@
 --    contact_email varchar(255),
 --);
 
--- hibernate auto created column doesn't follow the order in definition of Book entity.
--- INSERT INTO table_name (column1, column2, column3, ...)
--- VALUES (value1, value2, value3, ...);
-
 
 INSERT INTO book (id, name, publish_date, contact_email) VALUES(1, 'The Tartar Steppe', NOW(),'tts@abc.com');
 INSERT INTO book (id, name, publish_date, contact_email) VALUES(2, 'Poem Strip', NOW(), 'ps@abc.com');
