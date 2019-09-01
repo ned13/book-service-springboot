@@ -8,9 +8,9 @@
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ned</groupId>
-    <artifactId>simple-data-jpa-springboot</artifactId>
+    <artifactId>book-service-springboot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>simple-data-jpa-springboot</name>
+    <name>book-service-springboot</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
