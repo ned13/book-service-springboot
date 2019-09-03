@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 
@@ -50,13 +51,20 @@ public class Book {
     private Integer version;
 
     static {
-        Book.typeMap.addMappings(mapper -> mapper
-                                    .using((instant) -> Date.from((Instant)instant.getSource()))
-                                    .map(Book::getPublishDate, BookDto::setPublishDate));
+        Book.typeMap.addMappings(mapper -> {
+            mapper.using((ctx) -> Date.from((Instant)ctx.getSource()));
+            mapper.when(Conditions.isNotNull());
+            mapper.map(Book::getPublishDate, BookDto::setPublishDate);
+        });
     }
 
     // standard constructors
     public Book() {
+    }
+
+    public Book(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     @Override public boolean equals(Object otherObj){

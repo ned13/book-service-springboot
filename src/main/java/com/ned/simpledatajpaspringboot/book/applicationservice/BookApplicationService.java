@@ -3,10 +3,10 @@ package com.ned.simpledatajpaspringboot.book.applicationservice;
 import com.ned.simpledatajpaspringboot.book.domain.BookRepository;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
-import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -19,31 +19,46 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookApplicationService {
-    @Autowired
     private BookRepository bookRepository;
-
-    @Autowired
     private BookFactory bookFactory;
 
-    public List<Book> list() {
-        return bookRepository.findAll();
+    @Autowired
+    public BookApplicationService(BookRepository bookRepository, BookFactory bookFactory) {
+        this.bookRepository = bookRepository;
+        this.bookFactory = bookFactory;
+    }
+
+    public List<BookDto> list() {
+        return bookRepository.findAll().stream()
+            .map(book -> book.toBookDto())
+            .collect(Collectors.toList());
     }
 
     @Transactional
-    public BookDto addNewBook(BookDto bookDto) {
-        Book newBook = bookFactory.makeBookFrom(bookDto);
+    public Optional<BookDto> addNewBook(BookDto willBeAddedBookDto) {
+        Objects.requireNonNull(willBeAddedBookDto, "willBeAddedBookDto shuold not be null.");
+        Book newBook = bookFactory.makeBookFrom(willBeAddedBookDto);
         Book savedBook = bookRepository.save(newBook);
-        return savedBook.toBookDto();
+        return Optional.of(savedBook.toBookDto());
     }
 
-    public Optional<Book> findBookBy(String name) {
+    public Optional<BookDto> getBookBy(Long id) {
+        Objects.requireNonNull(id, "id should not be null.");
+        return bookRepository.findById(id)
+            .map(book -> book.toBookDto());
+    }
+
+    public Optional<BookDto> findBookBy(String name) {
         Book exampleBook = new Book();
         exampleBook.setName(name);
-        return bookRepository.findOne(Example.of(exampleBook));
+        return bookRepository.findOne(Example.of(exampleBook)).map(b -> b.toBookDto());
     }
 
-    public List<Book> getAllBoook() {
-        return this.bookRepository.findAll();
+    public List<BookDto> getAllBoook() {
+        return this.bookRepository.findAll()
+            .stream()
+            .map(book -> book.toBookDto())
+            .collect(Collectors.toList());
     }
 
     @Transactional

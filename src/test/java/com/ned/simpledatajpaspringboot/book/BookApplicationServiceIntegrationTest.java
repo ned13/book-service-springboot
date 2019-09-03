@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
-import com.ned.simpledatajpaspringboot.book.domain.Book;
+import com.ned.simpledatajpaspringboot.book.domain.BookDto;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class BookApplicationServiceIntegrationTest {
 
     @Test
     public void whenApplicationStarts_thenHibernateCreatesInitialRecords() {
-        List<Book> books = bookAppService.list();
+        List<BookDto> books = bookAppService.list();
 
         assertThat(books.size(), is(4));
     }
@@ -48,8 +48,8 @@ public class BookApplicationServiceIntegrationTest {
         bookAppService.addNewBook(newBookDto);
 
         //Assert
-        List<Book> books = bookAppService.list();
-        assertThat(books, hasItem(Matchers.<Book>hasProperty("name", is(NEW_BOOK_NAME))));
+        List<BookDto> books = bookAppService.list();
+        assertThat(books, hasItem(Matchers.<BookDto>hasProperty("name", is(NEW_BOOK_NAME))));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class BookApplicationServiceIntegrationTest {
         bookAppService.addNewBook(newBookDto);
 
         //Act
-        Optional<Book> foundBook = bookAppService.findBookBy(NEW_BOOK_NAME);
+        Optional<BookDto> foundBook = bookAppService.findBookBy(NEW_BOOK_NAME);
 
         //Assert
         assertThat(foundBook.isPresent(), is(true));

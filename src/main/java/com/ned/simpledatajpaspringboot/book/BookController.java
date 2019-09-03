@@ -5,10 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
-import com.ned.simpledatajpaspringboot.book.domain.Book;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,20 +32,21 @@ public class BookController {
     @RequestMapping(path = "", method = RequestMethod.GET)
     public ResponseEntity<Result> getAllBoook(@RequestParam(value = "bookname", required = false) String bookname) {
         if (bookname == null || bookname == "") {
-            List<BookDto> allBook = bookAppService.getAllBoook().stream().map(b -> b.toBookDto()).collect(Collectors.toList());
+            List<BookDto> allBook = bookAppService.getAllBoook();
             return ResponseEntity.ok().body(new Result(true, allBook));
         } else {
-            Optional<Book> foundBookOpt = bookAppService.findBookBy(bookname);
-            if (!foundBookOpt.isPresent()) return ResponseEntity.ok().body(new Result(true));
-            Book foundBook = foundBookOpt.get();
-            return ResponseEntity.ok().body(new Result(true, foundBook.toBookDto()));
+            Optional<BookDto> foundBookDtoOpt = bookAppService.findBookBy(bookname);
+            if (!foundBookDtoOpt.isPresent()) return ResponseEntity.ok().body(new Result(true));
+            BookDto foundBookDto = foundBookDtoOpt.get();
+            return ResponseEntity.ok().body(new Result(true, foundBookDto));
         }
     }
 
     @RequestMapping(path = "", method = RequestMethod.POST, consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Result> addNewBook(@RequestBody BookDto bookDto) {
-        BookDto addedBookDto = bookAppService.addNewBook(bookDto);
-        return ResponseEntity.ok().body(new Result(true, addedBookDto));
+        return bookAppService.addNewBook(bookDto)
+            .map(addedBookDto -> ResponseEntity.ok().body(new Result(true, addedBookDto)))
+            .orElse(ResponseEntity.ok().body(new Result(false, "book is not added.")));
     }
 
     @RequestMapping(path = "/{id}", method = RequestMethod.PUT, consumes = {"application/json"}, produces = {"application/json"})

@@ -13,9 +13,9 @@ public class BookFactory {
                 .map(b -> {
                     Book newBook = new Book();
                     if (bookDto.getId() != null) newBook.setId(bookDto.getId());
-                    newBook.setName(b.getName());
-                    newBook.setPublishDate(b.getPublishDate().toInstant());
-                    newBook.setContactEmail(b.getContactEmail());
+                    if (bookDto.getName() != null) newBook.setName(b.getName());
+                    if (bookDto.getPublishDate() != null) newBook.setPublishDate(b.getPublishDate().toInstant());
+                    if (bookDto.getContactEmail() != null) newBook.setContactEmail(b.getContactEmail());
                     return newBook;
                 }).getOrElse(Book.INVALID_BOOK);
     }

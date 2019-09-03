@@ -20,9 +20,7 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.modelmapper.TypeMap;
 
-import io.vavr.collection.CharSeq;
 import io.vavr.collection.Stream;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -41,7 +39,7 @@ public class BookTest {
     @Test
     public void testSetterAndGetter() {
         //Arrange
-        Book aBook = new Book();
+        BookDto aBook = new BookDto();
         final long ID = 1234L;
         final String NAME = "ThisIsABook.";
         final Instant PUBLISH_DATE = Instant.now();
@@ -63,20 +61,20 @@ public class BookTest {
     @Test
     public void testEmptyName() {
         //Arrange
-        Book aBook = new Book();
+        BookDto aBook = new BookDto();
         aBook.setName("");
 
         //Act
-        Set<ConstraintViolation<Book>> violations = validator.validate(aBook);
+        Set<ConstraintViolation<BookDto>> violations = validator.validate(aBook);
 
         //Assert
-        assertThat(violations, hasItem(Matchers.<ConstraintViolation<Book>>hasProperty("message", is(Book.INVALID_NAME_LENGTH))));
+        assertThat(violations, hasItem(Matchers.<ConstraintViolation<BookDto>>hasProperty("message", is(BookDto.INVALID_NAME_LENGTH))));
     }
 
     @Test
     public void testExceedingMaxLengthName() {
         //Arrange
-        Book aBook = new Book();
+        BookDto aBook = new BookDto();
         Random rand = new Random();
 
         //generate book name with random char between 32-126, which is printable characters
@@ -89,21 +87,21 @@ public class BookTest {
         aBook.setName(bookName);
 
         //Act
-        Set<ConstraintViolation<Book>> violations = validator.validate(aBook);
+        Set<ConstraintViolation<BookDto>> violations = validator.validate(aBook);
 
         //Assert
-        assertThat(violations, hasItem(Matchers.<ConstraintViolation<Book>>hasProperty("message", is(Book.INVALID_NAME_LENGTH))));
+        assertThat(violations, hasItem(Matchers.<ConstraintViolation<BookDto>>hasProperty("message", is(BookDto.INVALID_NAME_LENGTH))));
     }
 
     @Test
     public void testValidEmail() {
         //Arrange
-        Book aBook = new Book();
+        BookDto aBook = new BookDto();
         aBook.setName("IamBookName");
         aBook.setContactEmail("abc@sha.com");
 
         //Act
-        Set<ConstraintViolation<Book>> violations = validator.validate(aBook);
+        Set<ConstraintViolation<BookDto>> violations = validator.validate(aBook);
 
         //Assert
         assertThat(violations.size(), is(0));
@@ -112,26 +110,26 @@ public class BookTest {
     @Test
     public void testInvalidEmail() {
         //Arrange
-        Book book1 = new Book();
+        BookDto book1 = new BookDto();
         book1.setName("IamBookName");
         book1.setContactEmail("invalidmail!@#@@sha.com");
 
         //Act
-        Set<ConstraintViolation<Book>> book1Violations = validator.validate(book1);
+        Set<ConstraintViolation<BookDto>> book1Violations = validator.validate(book1);
 
         //Assert
-        assertThat(book1Violations, hasItem(Matchers.<ConstraintViolation<Book>>hasProperty("message", is(Book.INVALID_EMAIL))));
+        assertThat(book1Violations, hasItem(Matchers.<ConstraintViolation<BookDto>>hasProperty("message", is(BookDto.INVALID_EMAIL))));
     }
 
     @Test
     public void testToBookDtoTypeMap() {
-        Book.getTypeMap().validate();
+        BookDto.getTypeMap().validate();
     }
 
     @Test
     public void testToBookDto() {
         //Arrange
-        Book aBook = new Book();
+        BookDto aBook = new BookDto();
         final long ID = 1235L;
         final String NAME = "TOBookDto";
         final Instant PUBLISH_DATE = Instant.now();
@@ -154,7 +152,7 @@ public class BookTest {
     @Test
     public void testInvalidBookToInavlidBookDto() {
         //Act
-        BookDto bookDto = Book.INVALID_BOOK.toBookDto();
+        BookDto bookDto = BookDto.INVALID_BOOK.toBookDto();
 
         //Assert
         assertThat(bookDto, is(BookDto.INVALID_BOOKDTO));
