@@ -21,6 +21,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             .setParameter("username", username)
             .getResultList();
 
-        return users.size() > 0 ? Optional.of(users.get(0)) : Optional.empty();
+        return users.size() > 0 ? Optional.ofNullable(users.get(0)) : Optional.empty();
     }
 }

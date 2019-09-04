@@ -29,9 +29,13 @@ public class BookApplicationService {
     }
 
     public List<BookDto> list() {
-        return bookRepository.findAll().stream()
-            .map(book -> book.toBookDto())
-            .collect(Collectors.toList());
+        try {
+            return bookRepository.findAll().stream()
+                .map(book -> book.toBookDto())
+                .collect(Collectors.toList());
+        } catch (Exception ex) {
+            throw new BookApplicationServiceException(ex);
+        }
     }
 
     @Transactional
@@ -39,34 +43,33 @@ public class BookApplicationService {
         Objects.requireNonNull(willBeAddedBookDto, "willBeAddedBookDto shuold not be null.");
         Book newBook = bookFactory.makeBookFrom(willBeAddedBookDto);
         Book savedBook = bookRepository.save(newBook);
-        return Optional.of(savedBook.toBookDto());
+        return Optional.ofNullable(savedBook.toBookDto());
     }
 
     public Optional<BookDto> getBookBy(Long id) {
-        Objects.requireNonNull(id, "id should not be null.");
-        return bookRepository.findById(id)
-            .map(book -> book.toBookDto());
+        return Optional.ofNullable(id)
+            .flatMap(localId -> bookRepository.findById(localId))
+            .map(foundBook -> foundBook.toBookDto());
     }
 
     public Optional<BookDto> findBookBy(String name) {
-        Book exampleBook = new Book();
-        exampleBook.setName(name);
-        return bookRepository.findOne(Example.of(exampleBook)).map(b -> b.toBookDto());
-    }
-
-    public List<BookDto> getAllBoook() {
-        return this.bookRepository.findAll()
-            .stream()
-            .map(book -> book.toBookDto())
-            .collect(Collectors.toList());
+        return Optional.ofNullable(name)
+            .flatMap(localName -> {
+                Book exampleBook = new Book();
+                exampleBook.setName(name);
+                return bookRepository.findOne(Example.of(exampleBook));
+            })
+            .map(b -> b.toBookDto());
     }
 
     @Transactional
-    public BookDto modifyBookName(Long id, String newBookName) {
-        Optional<Book> foundBookOpt = bookRepository.findById(id);
-        if (!foundBookOpt.isPresent()) return BookDto.INVALID_BOOKDTO;
-        Book foundBook = foundBookOpt.get();
-        foundBook.setName(newBookName);
-        return bookRepository.save(foundBook).toBookDto();
+    public Optional<BookDto> modifyBookName(Long id, String newBookName) {
+        return Optional.ofNullable(id)
+            .flatMap(localId -> bookRepository.findById(localId))
+            .map(foundBook -> {
+                foundBook.setName(newBookName);
+                bookRepository.save(foundBook);
+                return foundBook.toBookDto();
+            });
     }
 }

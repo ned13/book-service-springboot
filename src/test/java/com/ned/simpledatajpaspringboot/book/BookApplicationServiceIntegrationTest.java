@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
-import com.ned.simpledatajpaspringboot.book.domain.BookDto;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
 import org.junit.Before;

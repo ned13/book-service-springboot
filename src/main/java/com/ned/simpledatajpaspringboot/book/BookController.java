@@ -32,7 +32,7 @@ public class BookController {
     @RequestMapping(path = "", method = RequestMethod.GET)
     public ResponseEntity<Result> getAllBoook(@RequestParam(value = "bookname", required = false) String bookname) {
         if (bookname == null || bookname == "") {
-            List<BookDto> allBook = bookAppService.getAllBoook();
+            List<BookDto> allBook = bookAppService.list();
             return ResponseEntity.ok().body(new Result(true, allBook));
         } else {
             Optional<BookDto> foundBookDtoOpt = bookAppService.findBookBy(bookname);
@@ -54,8 +54,10 @@ public class BookController {
         if (id == 0) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result(false, "Invalid id=" + id));
         String bookName = bookDto.getName();
         if (bookName == null || bookName == "") return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result(false, "Invalid bookName=" + bookName));
-        BookDto modifiedBookDto = bookAppService.modifyBookName(id, bookName);
-        return ResponseEntity.ok().body(new Result(true, modifiedBookDto));
+        return bookAppService.modifyBookName(id, bookName)
+            .map(modifiedBookDto -> ResponseEntity.ok().body(new Result(true, modifiedBookDto)))
+            .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Result(false, "No book name is modified.")));
+
     }
 
 
