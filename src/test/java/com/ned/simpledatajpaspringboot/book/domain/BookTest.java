@@ -39,7 +39,7 @@ public class BookTest {
     @Test
     public void testSetterAndGetter() {
         //Arrange
-        BookDto aBook = new BookDto();
+        Book aBook = new Book();
         final long ID = 1234L;
         final String NAME = "ThisIsABook.";
         final Instant PUBLISH_DATE = Instant.now();
@@ -61,20 +61,20 @@ public class BookTest {
     @Test
     public void testEmptyName() {
         //Arrange
-        BookDto aBook = new BookDto();
+        Book aBook = new Book();
         aBook.setName("");
 
         //Act
-        Set<ConstraintViolation<BookDto>> violations = validator.validate(aBook);
+        Set<ConstraintViolation<Book>> violations = validator.validate(aBook);
 
         //Assert
-        assertThat(violations, hasItem(Matchers.<ConstraintViolation<BookDto>>hasProperty("message", is(BookDto.INVALID_NAME_LENGTH))));
+        assertThat(violations, hasItem(Matchers.<ConstraintViolation<Book>>hasProperty("message", is(Book.INVALID_NAME_LENGTH))));
     }
 
     @Test
     public void testExceedingMaxLengthName() {
         //Arrange
-        BookDto aBook = new BookDto();
+        Book aBook = new Book();
         Random rand = new Random();
 
         //generate book name with random char between 32-126, which is printable characters
@@ -87,21 +87,21 @@ public class BookTest {
         aBook.setName(bookName);
 
         //Act
-        Set<ConstraintViolation<BookDto>> violations = validator.validate(aBook);
+        Set<ConstraintViolation<Book>> violations = validator.validate(aBook);
 
         //Assert
-        assertThat(violations, hasItem(Matchers.<ConstraintViolation<BookDto>>hasProperty("message", is(BookDto.INVALID_NAME_LENGTH))));
+        assertThat(violations, hasItem(Matchers.<ConstraintViolation<Book>>hasProperty("message", is(Book.INVALID_NAME_LENGTH))));
     }
 
     @Test
     public void testValidEmail() {
         //Arrange
-        BookDto aBook = new BookDto();
+        Book aBook = new Book();
         aBook.setName("IamBookName");
         aBook.setContactEmail("abc@sha.com");
 
         //Act
-        Set<ConstraintViolation<BookDto>> violations = validator.validate(aBook);
+        Set<ConstraintViolation<Book>> violations = validator.validate(aBook);
 
         //Assert
         assertThat(violations.size(), is(0));
@@ -110,26 +110,26 @@ public class BookTest {
     @Test
     public void testInvalidEmail() {
         //Arrange
-        BookDto book1 = new BookDto();
+        Book book1 = new Book();
         book1.setName("IamBookName");
         book1.setContactEmail("invalidmail!@#@@sha.com");
 
         //Act
-        Set<ConstraintViolation<BookDto>> book1Violations = validator.validate(book1);
+        Set<ConstraintViolation<Book>> book1Violations = validator.validate(book1);
 
         //Assert
-        assertThat(book1Violations, hasItem(Matchers.<ConstraintViolation<BookDto>>hasProperty("message", is(BookDto.INVALID_EMAIL))));
+        assertThat(book1Violations, hasItem(Matchers.<ConstraintViolation<Book>>hasProperty("message", is(Book.INVALID_EMAIL))));
     }
 
     @Test
     public void testToBookDtoTypeMap() {
-        BookDto.getTypeMap().validate();
+        Book.getTypeMap().validate();
     }
 
     @Test
     public void testToBookDto() {
         //Arrange
-        BookDto aBook = new BookDto();
+        Book aBook = new Book();
         final long ID = 1235L;
         final String NAME = "TOBookDto";
         final Instant PUBLISH_DATE = Instant.now();
@@ -152,7 +152,7 @@ public class BookTest {
     @Test
     public void testInvalidBookToInavlidBookDto() {
         //Act
-        BookDto bookDto = BookDto.INVALID_BOOK.toBookDto();
+        BookDto bookDto = Book.INVALID_BOOK.toBookDto();
 
         //Assert
         assertThat(bookDto, is(BookDto.INVALID_BOOKDTO));

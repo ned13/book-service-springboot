@@ -157,7 +157,7 @@ public class BookApplicationServiceTest {
         Book book = new Book();
         book.setId(VALID_ID);
         book.setName("IAmAValidBook");
-        when(bookRepo.getOne(VALID_ID)).thenReturn(book);
+        when(bookRepo.findById(VALID_ID)).thenReturn(Optional.ofNullable(book));
 
         //Act
         Optional<BookDto> bookDtoOpt = bookAppService.getBookBy(VALID_ID);
