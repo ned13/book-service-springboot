@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import com.ned.simpledatajpaspringboot.book.domain.Book;
 import com.ned.simpledatajpaspringboot.book.domain.BookFactory;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,7 @@ public class BookApplicationService {
     @Transactional
     public Optional<BookDto> modifyBookName(Long id, String newBookName) {
         return Optional.ofNullable(id)
+            .filter(localId -> Strings.isNotBlank(newBookName))
             .flatMap(localId -> bookRepository.findById(localId))
             .map(foundBook -> {
                 foundBook.setName(newBookName);

@@ -4,6 +4,7 @@ package com.ned.simpledatajpaspringboot.book.applicationservice;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.data.domain.Example;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -17,6 +18,9 @@ import static org.hamcrest.Matchers.greaterThan;
 //mockito
 import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -38,22 +42,27 @@ import com.ned.simpledatajpaspringboot.book.domain.BookFactory;
 import com.ned.simpledatajpaspringboot.book.domain.BookRepository;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BookApplicationServiceTest {
+    @Mock
+    BookRepository bookRepo;
 
+    @Mock
+    BookFactory bookFac;
+
+    @InjectMocks
+    BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
 
     @Test
     public void testListAll() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bas = new BookApplicationService(bookRepo, bookFac);
         Book book1 = new Book(1L, "Book1");
         Book book2 = new Book(2L, "Book2");
         Book book3 = new Book(3L, "Book3");
         when(bookRepo.findAll()).thenReturn(Arrays.asList(book1, book2, book3));
 
         //Act
-        List<BookDto> bookDtos = bas.list();
+        List<BookDto> bookDtos = bookAppService.list();
 
         //Assert
         assertThat(bookDtos.size(), is(3));
@@ -65,13 +74,10 @@ public class BookApplicationServiceTest {
     @Test
     public void testListAllWithoutAnyBook() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bas = new BookApplicationService(bookRepo, bookFac);
         when(bookRepo.findAll()).thenReturn(new ArrayList<Book>());
 
         //Act
-        List<BookDto> bookDtos = bas.list();
+        List<BookDto> bookDtos = bookAppService.list();
 
         //Assert
         assertThat(bookDtos.size(), is(0));
@@ -80,9 +86,6 @@ public class BookApplicationServiceTest {
     @Test
     public void testListAllWithInternalException() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
         when(bookRepo.findAll()).thenThrow(new RuntimeException("This is internal error!!!!"));
 
         //Act
@@ -99,9 +102,6 @@ public class BookApplicationServiceTest {
     @Test
     public void testAddNewBook() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
         Book willBeAddedBook = new Book();
         willBeAddedBook.setId(1234L);
         willBeAddedBook.setName("IamNewBook");
@@ -133,9 +133,6 @@ public class BookApplicationServiceTest {
     @Test
     public void testAddNewBookWithNull() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
 
         //Act
         try {
@@ -150,9 +147,6 @@ public class BookApplicationServiceTest {
     @Test
     public void testGetBookByValidId() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
         final Long VALID_ID = 2L;
         Book book = new Book();
         book.setId(VALID_ID);
@@ -170,9 +164,6 @@ public class BookApplicationServiceTest {
     @Test
     public void testGetBookByNullId() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
 
         //Act
         Optional<BookDto> bookDtoOpt = bookAppService.getBookBy(null);
@@ -184,9 +175,6 @@ public class BookApplicationServiceTest {
     @Test
     public void testGetBookByNonExistId() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
 
         //Act
         Optional<BookDto> bookDtoOpt = bookAppService.getBookBy(3L);
@@ -198,9 +186,6 @@ public class BookApplicationServiceTest {
     @Test
     public void testFindBookByValidName() {
         //Arrange
-        BookRepository bookRepo = mock(BookRepository.class);
-        BookFactory bookFac = mock(BookFactory.class);
-        BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
         final Long VALID_ID = 2L;
         final String VALID_NAME = "IAmAValidBook";
         Book book = new Book();
@@ -227,17 +212,52 @@ public class BookApplicationServiceTest {
 
     @Test
     public void testModifyBookName() {
+        //Arrange
+        final Long VALID_ID = 2L;
+        final String VALID_NAME = "IAmAValidBook";
+        Book book = new Book();
+        book.setId(VALID_ID);
+        book.setName(VALID_NAME);
+        when(bookRepo.findById(VALID_ID)).thenReturn(Optional.of(book));
 
+        //Act
+        final String NEW_BOOK_NAME = "IAmNewBookName";
+        Optional<BookDto> modifiedBookDtoOpt = bookAppService.modifyBookName(VALID_ID, NEW_BOOK_NAME);
+
+        //Assert
+        assertThat(modifiedBookDtoOpt.isPresent(), is(true));
+        assertThat(modifiedBookDtoOpt.get().getName(), is(NEW_BOOK_NAME));
     }
 
     @Test
     public void testModifyBookNameWithNonExistId() {
+        //Arrange
+        final Long NON_EXIST_ID = 999L;
 
+        //Act
+        final String NEW_BOOK_NAME = "IAmNewBookName";
+        Optional<BookDto> modifiedBookDtoOpt = bookAppService.modifyBookName(NON_EXIST_ID, NEW_BOOK_NAME);
+
+        //Assert
+        assertThat(modifiedBookDtoOpt.isPresent(), is(false));
     }
 
     @Test
     public void testModifyBookNameWithInvalidName() {
+        //Arrange
+        final Long VALID_ID = 2L;
+        final String VALID_NAME = "IAmAValidBook";
+        Book book = new Book();
+        book.setId(VALID_ID);
+        book.setName(VALID_NAME);
+        when(bookRepo.findById(VALID_ID)).thenReturn(Optional.of(book));
 
+        //Act
+        final String INVALID_BOOK_NAME = null;
+        Optional<BookDto> modifiedBookDtoOpt = bookAppService.modifyBookName(VALID_ID, INVALID_BOOK_NAME);
+
+        //Assert
+        assertThat(modifiedBookDtoOpt.isPresent(), is(false));
     }
 
 
