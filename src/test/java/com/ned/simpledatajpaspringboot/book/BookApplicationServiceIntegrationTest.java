@@ -65,7 +65,6 @@ public class BookApplicationServiceIntegrationTest {
 
         //Assert
         assertThat(foundBook.isPresent(), is(true));
-        assertThat(foundBook.get().getId(), greaterThan(0L));
         assertThat(foundBook.get().getName(), is(NEW_BOOK_NAME));
     }
 

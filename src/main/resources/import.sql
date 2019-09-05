@@ -17,7 +17,7 @@ INSERT INTO book (id, name, publish_date, contact_email) VALUES(2, 'Poem Strip',
 INSERT INTO book (id, name, publish_date, contact_email) VALUES(3, 'Restless Nights: Selected Stories of Dino Buzzati', NOW(), 'rnssodb@abc.com');
 INSERT INTO book (id, name, publish_date, contact_email) VALUES(4, 'Alice''s Adventures in Wonderland', NOW(), 'aaw@abc.com');
 
-ALTER SEQUENCE hibernate_sequence RESTART WITH 5;
+ALTER SEQUENCE book_seq RESTART WITH 5;
 
 INSERT INTO user (id, username, password) VALUES (1, 'user', '9a1996efc97181f0aee18321aa3b3b12');
 INSERT INTO user (id, username , password) VALUES (2,'admin','9a1996efc97181f0aee18321aa3b3b12');

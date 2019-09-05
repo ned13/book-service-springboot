@@ -246,11 +246,6 @@ public class BookApplicationServiceTest {
     public void testModifyBookNameWithInvalidName() {
         //Arrange
         final Long VALID_ID = 2L;
-        final String VALID_NAME = "IAmAValidBook";
-        Book book = new Book();
-        book.setId(VALID_ID);
-        book.setName(VALID_NAME);
-        when(bookRepo.findById(VALID_ID)).thenReturn(Optional.of(book));
 
         //Act
         final String INVALID_BOOK_NAME = null;

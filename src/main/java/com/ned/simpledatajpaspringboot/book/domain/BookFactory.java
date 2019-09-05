@@ -20,4 +20,9 @@ public class BookFactory {
                 }).getOrElse(Book.INVALID_BOOK);
     }
 
+    public Book makeBookBy(Long id, String name) {
+        Book newBook = new Book();
+        return newBook;
+    }
+
 }
