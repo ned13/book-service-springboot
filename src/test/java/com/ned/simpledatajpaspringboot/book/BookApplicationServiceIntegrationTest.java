@@ -1,6 +1,7 @@
 package com.ned.simpledatajpaspringboot.book;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +14,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockReset;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
+
 import org.hamcrest.Matchers;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.greaterThan;
@@ -25,15 +30,38 @@ import static org.hamcrest.Matchers.greaterThan;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BookApplicationServiceIntegrationTest {
-    @Autowired
+    //@Autowired
+    @SpyBean(reset = MockReset.BEFORE)
     private BookApplicationService bookAppService;
 
     @Test
-    public void whenApplicationStarts_thenHibernateCreatesInitialRecords() {
+    public void testListAllBooks() {
         List<BookDto> books = bookAppService.list();
 
-        assertThat(books.size(), is(4));
+        assertThat(books, hasItem(Matchers.<BookDto>hasProperty("id", is(1L))));
+        assertThat(books, hasItem(Matchers.<BookDto>hasProperty("id", is(2L))));
+        assertThat(books, hasItem(Matchers.<BookDto>hasProperty("id", is(3L))));
+        assertThat(books, hasItem(Matchers.<BookDto>hasProperty("id", is(4L))));
     }
+
+    @Test
+    public void testListAllBooksWithSpy() {
+        //Arrange
+        BookDto bookDto1 = new BookDto(1L, "book1", Date.from(Instant.now()), "book1@abc.com");
+        BookDto bookDto2 = new BookDto(2L, "book2", Date.from(Instant.now()), "book2@abc.com");
+        when(bookAppService.list()).thenReturn(Arrays.asList(bookDto1, bookDto2));
+
+        //Act
+        List<BookDto> books = bookAppService.list();
+        Optional<BookDto> aBook = bookAppService.getBookBy(1L);
+
+        //Assert
+        assertThat(books.size(), is(2));
+        assertThat(aBook.isPresent(), is(true));
+        assertThat(aBook.get().getId(), is(1L));
+    }
+
+
 
     @Test
     public void testAddNewBook() {
