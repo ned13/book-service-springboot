@@ -55,7 +55,6 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
-import com.ned.simpledatajpaspringboot.book.domain.BookFactory;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
 @RunWith(SpringRunner.class)
@@ -121,9 +120,26 @@ public class BookControllerTest {
     }
 
     @Test
-    public void testAddNewBook() {
+    public void testAddNewBook() throws Exception {
+        BookDto bookDto1 = new BookDto(1L, "book1", Date.from(Instant.now()), "book1@abc.com");
+        when(bookAppService.addNewBook(bookDto1)).thenReturn(Optional.of(bookDto1));
 
+        //Act
+        //How to use MockMvc to post application/json.
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post("/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(bookDto1))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
 
+        String resultStr = mvcResult.getResponse().getContentAsString();
+        BookControllerResult result = objectMapper.readValue(resultStr, BookControllerResult.class);
+
+        //Assert
+        assertThat(result.available, is(true));
+        assertThat(result.books.size(), is(1));
+        assertThat(result.books, hasItem(Matchers.<BookDto>hasProperty("id", is(bookDto1.getId()))));
     }
 
 

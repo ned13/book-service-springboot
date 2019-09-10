@@ -51,7 +51,7 @@ public class BookApplicationServiceTest {
     BookFactory bookFac;
 
     @InjectMocks
-    BookApplicationService bookAppService = new BookApplicationService(bookRepo, bookFac);
+    BookApplicationService bookAppService;
 
     @Test
     public void testListAll() {
