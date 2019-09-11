@@ -7,15 +7,22 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
+import com.ned.simpledatajpaspringboot.book.domain.BookFactory;
+import com.ned.simpledatajpaspringboot.book.domain.BookRepository;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockReset;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -26,11 +33,28 @@ import org.hamcrest.Matchers;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.greaterThan;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BookApplicationServiceIntegrationTest {
-    //@Autowired
+
+    // @TestConfiguration
+    // public static class InnerTestConfiguration {
+    //     @Autowired
+    //     private BookRepository bookRepo;
+
+    //     @Autowired
+    //     private BookFactory bookFac;
+
+    //     @Bean
+    //     @Primary
+    //     public BookApplicationService bookApplicationService1() {
+    //         return new BookApplicationService(bookRepo, bookFac);
+    //     }
+    // }
+
+    // @Autowired
+    // @Qualifier("bookApplicationService1")
     @SpyBean(reset = MockReset.BEFORE)
     private BookApplicationService bookAppService;
 

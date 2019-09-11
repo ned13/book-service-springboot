@@ -6,12 +6,18 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Example;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -57,15 +63,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ned.simpledatajpaspringboot.book.applicationservice.BookApplicationService;
 import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 
+
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class BookControllerTest {
-    @Autowired
-    private MockMvc mvc;
 
+    // @TestConfiguration
+    // public static class InnerTestConfiguration {
+    //     @Bean
+    //     @Primary
+    //     public BookApplicationService bas111() {
+    //         return mock(BookApplicationService.class);
+    //     }
+    // }
+
+    //@Autowired
+    //@Qualifier("bas111")
     @MockBean
     private BookApplicationService bookAppService;
+
+    @Autowired
+    private MockMvc mvc;
 
     @Autowired
     private ObjectMapper objectMapper;
