@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class BookApplicationService {
     private BookRepository bookRepository;
     private BookFactory bookFactory;
@@ -30,6 +33,7 @@ public class BookApplicationService {
     }
 
     public List<BookDto> list() {
+        log.info("User lists all books.");
         try {
             return bookRepository.findAll().stream()
                 .map(book -> book.toBookDto())

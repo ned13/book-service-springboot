@@ -70,9 +70,20 @@ public class BookApplicationServiceIntegrationTest {
 
     @Test
     public void testListAllBooksWithSpy() {
+
         //Arrange
-        BookDto bookDto1 = new BookDto(1L, "book1", Date.from(Instant.now()), "book1@abc.com");
-        BookDto bookDto2 = new BookDto(2L, "book2", Date.from(Instant.now()), "book2@abc.com");
+        BookDto bookDto1 = BookDto.builder()
+            .id(1L).name("book1")
+            .publishDate(Date.from(Instant.now()))
+            .contactEmail("book1@abc.com")
+            .build();
+
+        BookDto bookDto2 = BookDto.builder()
+            .id(2L).name("book2")
+            .publishDate(Date.from(Instant.now()))
+            .contactEmail("book2@abc.com")
+            .build();
+
         when(bookAppService.list()).thenReturn(Arrays.asList(bookDto1, bookDto2));
 
         //Act

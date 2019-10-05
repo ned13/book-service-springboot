@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/books")
+@Slf4j
 public class BookController {
     private BookApplicationService bookAppService;
 
@@ -31,6 +34,7 @@ public class BookController {
 
     @RequestMapping(path = "", method = RequestMethod.GET)
     public ResponseEntity<BookControllerResult> getAllBoook(@RequestParam(value = "bookname", required = false) String bookname) {
+        log.info("receive http requst /books");
         if (bookname == null || bookname == "") {
             List<BookDto> allBook = bookAppService.list();
             return ResponseEntity.ok().body(new BookControllerResult(true, allBook));

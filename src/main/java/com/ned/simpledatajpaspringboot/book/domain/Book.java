@@ -22,7 +22,10 @@ import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Entity
+@Slf4j
 public class Book {
 
     public static final String INVALID_NAME_LENGTH = "Invalid name length";
@@ -57,6 +60,7 @@ public class Book {
             mapper.using((ctx) -> Date.from((Instant)ctx.getSource()));
             mapper.when(Conditions.isNotNull());
             mapper.map(Book::getPublishDate, BookDto::setPublishDate);
+            mapper.skip(BookDto::setComments);
         });
     }
 

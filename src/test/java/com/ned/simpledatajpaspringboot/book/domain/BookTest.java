@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.vavr.collection.List;
 import io.vavr.collection.Stream;
 
 import static org.hamcrest.CoreMatchers.*;

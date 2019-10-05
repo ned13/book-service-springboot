@@ -13,8 +13,10 @@ import com.ned.simpledatajpaspringboot.book.dto.BookDto;
 import org.springframework.stereotype.Component;
 
 import io.vavr.control.Option;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class BookFactory {
     private Validator bookValidator;
 
@@ -26,11 +28,12 @@ public class BookFactory {
     public Book makeBookFrom(BookDto bookDto) {
         return Option.of(bookDto)
                 .map(b -> {
+                    log.info("make a book according to " + b.toString());
                     Book newBook = new Book();
-                    if (bookDto.getId() != null) newBook.setId(bookDto.getId());
-                    if (bookDto.getName() != null) newBook.setName(b.getName());
-                    if (bookDto.getPublishDate() != null) newBook.setPublishDate(b.getPublishDate().toInstant());
-                    if (bookDto.getContactEmail() != null) newBook.setContactEmail(b.getContactEmail());
+                    if (b.getId() != null) newBook.setId(b.getId());
+                    if (b.getName() != null) newBook.setName(b.getName());
+                    if (b.getPublishDate() != null) newBook.setPublishDate(b.getPublishDate().toInstant());
+                    if (b.getContactEmail() != null) newBook.setContactEmail(b.getContactEmail());
 
                     Set<ConstraintViolation<Book>> violations = this.bookValidator.validate(newBook);
                     if (violations.size() > 0) throw new ConstraintViolationException(violations);
