@@ -7,20 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
-    @Autowired
-    private EntityManager entityManager;
+  @Autowired private EntityManager entityManager;
 
+  public Optional<User> findUserByUsername(String username) {
+    List<User> users =
+        entityManager.createQuery("select u " + "from User u " + "join fetch u.authorities " + "where u.username = :username", User.class).setParameter("username", username).getResultList();
 
-    public Optional<User> findUserByUsername(String username) {
-        List<User> users = entityManager.createQuery(
-            "select u " +
-            "from User u " +
-            "join fetch u.authorities " +
-            "where u.username = :username"
-            , User.class)
-            .setParameter("username", username)
-            .getResultList();
-
-        return users.size() > 0 ? Optional.ofNullable(users.get(0)) : Optional.empty();
-    }
+    return users.size() > 0 ? Optional.ofNullable(users.get(0)) : Optional.empty();
+  }
 }

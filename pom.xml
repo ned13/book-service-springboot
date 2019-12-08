@@ -1,91 +1,111 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.7.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
-    </parent>
-    <groupId>com.ned</groupId>
-    <artifactId>book-service-springboot</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>book-service-springboot</name>
-    <description>Demo project for Spring Boot</description>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.10.RELEASE</version>
+    <relativePath /> <!-- lookup parent from repository -->
+  </parent>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <groupId>com.ned</groupId>
+  <artifactId>book-service-springboot</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>book-service-springboot</name>
+  <description>Demo project for Spring Boot</description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+  <properties>
+    <java.version>1.8</java.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <plugin.checkstyle.version>3.1.0</plugin.checkstyle.version>
+    <checkstyle.standards.version>8.27</checkstyle.standards.version>
+    <plugin.pmd.version>3.12.0</plugin.pmd.version>
+    <pmd.version>6.20.0</pmd.version>
+    <plugin.spotbugs.version>3.1.12.2</plugin.spotbugs.version>
+    <spotbugs.version>4.0.0-beta4</spotbugs.version>
+    <skipChecks>false</skipChecks>
+    <skipCheckStyle>${skipChecks}</skipCheckStyle>
+    <skipFindbugs>${skipChecks}</skipFindbugs>
+    <skipPMD>${skipChecks}</skipPMD>
+    <skipDupChecks>false</skipDupChecks>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+    <lib.io.vavr.vavr.version>0.10.0</lib.io.vavr.vavr.version>
+    <lib.junit.junit.version>4.12</lib.junit.junit.version>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jta-atomikos</artifactId>
-        </dependency>
+    <skipTests>false</skipTests>
+    <skipUTs>${skipTests}</skipUTs>
+    <skipITs>${skipTests}</skipITs>
+  </properties>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.vavr</groupId>
-            <artifactId>vavr</artifactId>
-            <version>0.10.0</version>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jta-atomikos</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
+      <version>${lib.io.vavr.vavr.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>2.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.10</version>
+      <scope>provided</scope>
+    </dependency>
 
 
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest</artifactId>
-            <version>2.1</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest</artifactId>
+      <version>2.1</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.exparity</groupId>
-            <artifactId>hamcrest-date</artifactId>
-            <version>2.0.5</version>
-        </dependency>
-        <!--
+    <dependency>
+      <groupId>org.exparity</groupId>
+      <artifactId>hamcrest-date</artifactId>
+      <version>2.0.5</version>
+    </dependency>
+    <!--
         <dependency>
             <groupId>io.vavr</groupId>
             <artifactId>vavr-test</artifactId>
@@ -93,42 +113,207 @@
         </dependency>
         -->
 
-    </dependencies>
+    <dependency>
+      <groupId>net.jcip</groupId>
+      <artifactId>jcip-annotations</artifactId>
+      <version>1.0</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
+      <version>${spotbugs.version}</version>
+      <optional>true</optional>
+    </dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*IntegrationTest</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
+  </dependencies>
 
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.0</version>
-                <configuration>
-                    <includes>
-                        <include>**/*IntegrationTest</include>
-                    </includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${plugin.checkstyle.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.puppycrawl.tools</groupId>
+            <artifactId>checkstyle</artifactId>
+            <version>${checkstyle.standards.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <cacheFile>${project.build.directory}/checkstyle-cachefile</cacheFile>
+          <configLocation>${project.basedir}/google_checks.xml</configLocation>
+          <consoleOutput>true</consoleOutput>
+          <failOnViolation>true</failOnViolation>
+          <failsOnError>true</failsOnError>
+          <includeTestSourceDirectory>true</includeTestSourceDirectory>
+          <logViolationsToConsole>true</logViolationsToConsole>
+          <propertyExpansion>cacheFile=${project.build.directory}/checkstyle-cachefile</propertyExpansion>
+          <skip>${skipCheckStyle}</skip>
+          <violationSeverity>warning</violationSeverity>
+        </configuration>
+        <executions>
+          <execution>
+            <id>check_style</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.theoryinpractise</groupId>
+        <artifactId>googleformatter-maven-plugin</artifactId>
+        <version>1.7.3</version>
+        <configuration>
+          <includeStale>false</includeStale>
+          <style>GOOGLE</style>
+          <formatMain>true</formatMain>
+          <formatTest>true</formatTest>
+          <filterModified>false</filterModified>
+          <skip>false</skip>
+          <fixImports>false</fixImports>
+          <maxLineLength>200</maxLineLength>
+        </configuration>
+
+        <!-- <executions>
+                          <execution>
+                            <id>reformat-sources</id>
+                            <goals>
+                              <goal>format</goal>
+                            </goals>
+                            <phase>process-sources</phase>
+                          </execution>
+                        </executions> -->
+
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${plugin.pmd.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-core</artifactId>
+            <version>${pmd.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-java</artifactId>
+            <version>${pmd.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <format>html</format>
+          <format>xml</format>
+          <includeTests>true</includeTests>
+          <linkXRef>false</linkXRef>
+          <minimumPriority>2</minimumPriority>
+          <skip>${skipPMD}</skip>
+          <targetJdk>${maven.compiler.target}</targetJdk>
+          <verbose>true</verbose>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>check</goal>
+              <!-- <goal>cpd-check</goal> -->
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok-maven-plugin</artifactId>
+        <version>1.18.10.0</version>
+        <configuration>
+          <addOutputDirectory>false</addOutputDirectory>
+          <skip>true</skip>
+          <outputDirectory>${project.build.directory}/delombok</outputDirectory>
+          <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>delombok</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${plugin.spotbugs.version}</version>
+        <dependencies>
+          <!-- overwrite dependency on spotbugs if you want to specify the version of spotbugs -->
+          <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs</artifactId>
+            <version>${spotbugs.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <effort>Default</effort>
+          <failOnError>true</failOnError>
+          <fork>true</fork>
+          <!-- <includeFilterFile>config/dm-findbugs.xml</includeFilterFile>                     -->
+          <includeTests>true</includeTests>
+          <maxHeap>1024</maxHeap>
+          <skip>${skipFindbugs}</skip>
+          <spotbugsXmlOutput>true</spotbugsXmlOutput>
+          <threshold>Default</threshold>
+
+        </configuration>
+        <executions>
+          <execution>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.0</version>
+        <configuration>
+          <excludes>
+            <exclude>**/*IntegrationTest</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.22.0</version>
+        <configuration>
+          <includes>
+            <include>**/*IntegrationTest</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
