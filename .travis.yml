@@ -1,8 +1,9 @@
+language: java
 addons:
   sonarcloud:
     organization: "ned13"
     token:
-      secure: "travis encrypt 36986cdc5cb65a51bd0130cd3dc337aadb483044" # encrypted value of your token
+      secure: "travis encrypt 829e439f92e75dae9c2917bcccc2b34064c1c67a" # encrypted value of your token
 
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
