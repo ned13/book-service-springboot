@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <plugin.checkstyle.version>3.1.0</plugin.checkstyle.version>
-    <checkstyle.standards.version>8.27</checkstyle.standards.version>
+    <checkstyle.standards.version>8.29</checkstyle.standards.version>
     <plugin.pmd.version>3.12.0</plugin.pmd.version>
     <pmd.version>6.20.0</pmd.version>
     <plugin.spotbugs.version>3.1.12.2</plugin.spotbugs.version>
