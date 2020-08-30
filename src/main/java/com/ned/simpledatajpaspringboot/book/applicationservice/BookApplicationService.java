@@ -46,7 +46,9 @@ public class BookApplicationService {
   }
 
   public Optional<BookDto> getBookBy(Long id) {
-    return Optional.ofNullable(id).flatMap(localId -> bookRepository.findById(localId)).map(foundBook -> foundBook.toBookDto());
+    return Optional.ofNullable(id)
+      .flatMap(localId -> bookRepository.findById(localId))
+      .map(foundBook -> foundBook.toBookDto());
   }
 
   public Optional<BookDto> findBookBy(String name) {

@@ -36,6 +36,11 @@
     <skipTests>false</skipTests>
     <skipUTs>${skipTests}</skipUTs>
     <skipITs>${skipTests}</skipITs>
+
+    <sonar.projectKey>ned13_book-service-springboot</sonar.projectKey>
+    <sonar.organization>ned13</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.login>69edc0cad3fbf081a12db91b0fb360346ed823f4</sonar.login>
   </properties>
 
   <dependencies>
@@ -180,14 +185,15 @@
         </configuration>
 
         <!-- <executions>
-                          <execution>
-                            <id>reformat-sources</id>
-                            <goals>
-                              <goal>format</goal>
-                            </goals>
-                            <phase>process-sources</phase>
-                          </execution>
-                        </executions> -->
+        <execution>
+          <id>reformat-sources</id>
+          <goals>
+            <goal>format</goal>
+          </goals>
+          <phase>process-sources</phase>
+          </execution>
+        </executions>
+        -->
 
       </plugin>
 
